@@ -1,0 +1,51 @@
+normalization
+
+puppeteer -> to scarape from javascript
+
+apify.com
+
+regex101.com
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+{
+    "link": "",	"location": { "country": "", "city": "", "address": "", "coordinates": { "lat": "", "lng": ""  } },
+    "size": { "parcel_m2": "", "gross_m2": "", "net_m2": "", "rooms": "" },
+    "price": {"value": "","currency": "" },
+    "description": "",
+    "title": "",
+    "images": [""]
+  }
+
+CREATE TABLE House_list (
+	id_house VARCHAR(255) NOT NULL,
+	link VARCHAR(255) NOT NULL,
+	country VARCHAR(255) NOT NULL,
+	city VARCHAR(255) NOT NULL,
+	address VARCHAR(255) NOT NULL,
+	lat FLOAT,
+	lng FLOAT,
+	parcel_m2 INT,
+	gross_m2 INT,
+	net_m2 INT,
+	rooms INT,
+	value INT,
+	currency VARCHAR(255),
+	description VARCHAR(255),
+	title VARCHAR(255),
+	PRIMARY KEY (id_house)
+);
+
+CREATE TABLE Images (
+	id_img VARCHAR(255) NOT NULL,
+	id_house VARCHAR(255) NOT NULL,
+	img_link VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id_img)
+);
+	
