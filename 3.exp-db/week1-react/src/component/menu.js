@@ -16,7 +16,7 @@ class Menu extends React.Component {
 
         return(
             <div className="dropdown">
-                <button className="dropbtn">Dropdown</button>
+                <button className="dropbtn">CITIES</button>
                 <div className="dropdown-content">
                     <a href="http://localhost:3000/houses">All Houses</a>
                     {cityLinks}

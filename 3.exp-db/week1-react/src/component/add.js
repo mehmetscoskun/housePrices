@@ -27,7 +27,7 @@ class Add extends React.Component {
 
     render () {
         const {addNewTodo} = this.props;
-        const jsonFileFormat = {"link":"string - not null","location":
+        const jsonFileFormat = {"link":"string - not null","market_date":"yyyy-mm-dd - not null", "location":
         {"country":"string - not null","city":"string - not null","address":"string - not null","coordinates":{"lat":"number","lng":"number"}},"size":{"parcel_m2":"number","gross_m2":"number","net_m2":"number - not null","rooms":"number - not null"},"price":{"value":"number - not null","currency":"string - not null"},"description":"string","title":"string","images":"[string(url), string(url)]"};
 
         return(
