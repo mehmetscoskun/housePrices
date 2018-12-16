@@ -26,6 +26,7 @@ CREATE TABLE Persons (
 CREATE TABLE House_list (
 	id_house VARCHAR(255) NOT NULL,
 	link VARCHAR(255) NOT NULL,
+	market_date DATE NOT NULL,
 	country VARCHAR(255) NOT NULL,
 	city VARCHAR(255) NOT NULL,
 	address VARCHAR(255) NOT NULL,

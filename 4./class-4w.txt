@@ -1,0 +1,3 @@
+stats = would be graph
+
+you should use validator.js for validation
