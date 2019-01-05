@@ -1,28 +1,81 @@
 import React from "react";
+import validElem from '../util/validElem.js';
 
 class Add extends React.Component {
 
     constructor (props) {
         super(props);
         this.state = {
-            jsonFile: ''
+            jsonFile: '',
+            valid: true,
+            showMessage: false,
+            errorMessage: ''
         }
+        this.isValidEntry = this.isValidEntry.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
         this.handleJsonFile = this.handleJsonFile.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    isValidEntry(file) {
+        try{
+            const jsonFile = JSON.parse(file)
+            this.setState({
+                valid:true,
+                errorMessage: ''
+            })
+            if(!Array.isArray(jsonFile)){
+                this.setState({
+                    valid:false,
+                    errorMessage: 'this is not an array json file'
+                })  
+            } else {
+                const invalidIndexes = [];
+                jsonFile.forEach((item, index) => { 
+                    if(!validElem(item)){
+                        invalidIndexes.push(index)
+                    }
+                })
+                if(invalidIndexes.length === 0) {
+                    this.setState({
+                        valid:true,
+                        errorMessage: ''
+                    })
+                } else {
+                    this.setState({
+                        valid:false,
+                        errorMessage: `in this JSON file, ${invalidIndexes.join('. ')} indexed elements are invalid.`
+                    }) 
+                }
+            }
+        } catch(e) {
+            this.setState({
+                valid:false,
+                errorMessage: 'this is not a valid json file'
+            })
+        }
+    };
+
+    handleValidation() {
+        this.setState({
+            showMessage: true
+        })
+    }
     
     handleJsonFile (event) {
-      this.setState({
-          jsonFile: event.target.value
-      })
+        this.isValidEntry(event.target.value)
+        
+        this.setState({
+            jsonFile: event.target.value
+        })
     }
 
     handleSubmit (event) {
-        // event.preventDefault();
+        event.preventDefault();
         this.setState({
             jsonFile: '',
-        })
-        event.target.reset()     
+            valid: true
+        })    
     }
 
     render () {
@@ -50,8 +103,9 @@ class Add extends React.Component {
                 
                 <form onSubmit={this.handleSubmit} className="inputForm">
                     <textarea className="inputTodo" type="text" onChange={this.handleJsonFile} placeholder=" Your JSON File"/> 
-                    <button className= "button" type="submit" onClick={()=>addNewTodo(this.state.jsonFile)}>Add</button>
+                    <button className= "button-add" type="submit" onClick={()=>{this.state.valid ? addNewTodo(this.state.jsonFile) : this.handleValidation()}}>Add</button>
                 </form>
+                <p style={{visibility: this.state.showMessage ? 'visible' : 'hidden', color: 'red'}} >{this.state.errorMessage}</p>
             </div>
         )
     }

@@ -20,18 +20,9 @@ class HouseInfoModel {
     }
 
     load(response, city) {
-        let selectHouses = "SELECT * FROM House_list AS H JOIN Images AS I ON H.id_house=I.id_house";
-        let condition = ` WHERE H.city='${city}'`
-        let semicolon = ";"
-        let mysqlCommand = "";
-
-        if(city === undefined) {
-            mysqlCommand = selectHouses + semicolon;
-        } else {
-            mysqlCommand = selectHouses + condition + semicolon;
-        }
+        let selectHouses = "SELECT * FROM House_list AS H JOIN Images AS I ON H.id_house=I.id_house;";
         
-        this.dbConnection.query(mysqlCommand, [], function (err, result, fields) {
+        this.dbConnection.query(selectHouses, [], function (err, result, fields) {
             if (err) {
                 console.log(err);
                 return; 

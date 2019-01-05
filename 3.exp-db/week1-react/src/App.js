@@ -1,40 +1,27 @@
 import React, { Component } from 'react';
 import './App.css';
 import {inject, observer} from 'mobx-react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+// import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import List from "./component/list.js";
 import Add from "./component/add";
-import Home from "./component/home";
+// import Home from "./component/home";
 import Menu from "./component/menu";
-import Avg from "./component/average";
-
-class App extends Component {
-  render() {
-    return(
-      <BrowserRouter>
-        <Switch>
-          <Route path='/houses' component={Houses}/>
-          <Route path='/' component={Home}/>
-        </Switch>
-      </BrowserRouter>
-    );
-  }
-}
+import Housechart from "./component/houseChart";
 
 @inject('myHouseApp')
 @observer
 
-class Houses extends Component {
+class App extends Component {
 
   constructor(props) {
     super(props);
-    const queries = new URLSearchParams(this.props.location.search)
-    const city = queries.get('city');
-    props.myHouseApp.listHouses(city);
+    props.myHouseApp.listHouses();
     this.state = {
-      checkStatus: true
+      checkStatus: true,
+      whichCity: 'All Cities'
     }
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleCity = this.handleCity.bind(this);
   }
 
   handleCheck() {
@@ -43,10 +30,20 @@ class Houses extends Component {
     })
   }
 
+  handleCity(city) {
+    this.setState({
+      whichCity: city
+    })
+  }
+
   render() {
     const {myHouseApp} = this.props;
+    const allHouses = myHouseApp.output.houses
+    const isAllCities = this.state.whichCity === 'All Cities';
 
-    const elements = myHouseApp.output.houses.map((item, key)=> 
+    const listedCities = isAllCities ? allHouses : allHouses.filter(item => item.city === this.state.whichCity)
+
+    const elements = listedCities.map((item, key)=> 
       <List key={key} index={key} item={JSON.stringify(item)} />
     )
       
@@ -55,7 +52,11 @@ class Houses extends Component {
       <div className="App">
         <h1>My House List</h1>
 
-        <Menu houses={myHouseApp.output.houses} />
+        <Menu 
+          houses={myHouseApp.output.houses}
+          whichCity= {this.state.whichCity}
+          handleCity = {this.handleCity}
+        />
 
         <div className="tabs">
           <div className="getFrame tab">
@@ -103,10 +104,10 @@ class Houses extends Component {
 
           <div className="postFrame tab">
             <input type="radio" id="tab-3" name="tab-group-1" onChange={()=>this.handleCheck} defaultChecked={!this.state.checkStatus}/>
-            <label htmlFor="tab-3" className="head">AVG</label>
+            <label htmlFor="tab-3" className="head">Graphics</label>
             
             <div className="average content">
-              <Avg houses={myHouseApp.output.houses} />
+              <Housechart houses={listedCities} />
             </div>
           </div>
         </div>  

@@ -9,11 +9,11 @@ class houseApp {
         status: 'loading'
     }
 
-    @action async listHouses(city) {
+    @action async listHouses() {
         this.output.houses = [];
         this.output.status = 'loading';
         try {
-            const data = await this.getItems(city);
+            const data = await this.getItems();
             runInAction(() => {
                 this.output.houses = data.results;
                 this.output.status = 'done';
@@ -25,14 +25,9 @@ class houseApp {
         }
     }
 
-    getItems(city) {
-        if(city === null) {
-            return fetch('/houses')
-                    .then(response => response.json());
-        } else {
-                return fetch(`/houses?city=${city}`)
-                    .then(response => response.json());
-        }
+    getItems() {
+        return fetch('/houses')
+        .then(response => response.json());
     }
 
     @action addNewTodo = (newEntry) => {
